@@ -6,12 +6,14 @@ class CountdownTimer {
   }
 
   start() {
+    const textContent = this.getTextContent();
     const targetDay = new Date(this.targetDate);
 
     setInterval(() => {
       const presentDay = Date.now();
       const deltaTime = targetDay - presentDay;
-      this.updateClockFace(this.getTimeComponents(deltaTime));
+      const time = (this.getTimeComponents(deltaTime));
+      this.updateClockFace(time, textContent)
     }, 1000);
   }
 
@@ -33,12 +35,16 @@ class CountdownTimer {
     return { days, hours, mins, secs };
   }
 
-  updateClockFace({ days, hours, mins, secs }) {
+  getTextContent() {
     const $selectorId = document.querySelector(this.selector);
     const $days = $selectorId.querySelector('[data-value="days"]');
     const $hours = $selectorId.querySelector('[data-value="hours"]');
     const $minutes = $selectorId.querySelector('[data-value="mins"]');
     const $seconds = $selectorId.querySelector('[data-value="secs"]');
+    return {$days, $hours, $minutes, $seconds}
+  }
+
+  updateClockFace({ days, hours, mins, secs }, {$days, $hours, $minutes, $seconds}) {
 
     $days.textContent = `${days}`;
     $hours.textContent = `${hours}`;
